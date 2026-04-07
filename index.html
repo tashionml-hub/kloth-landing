@@ -349,19 +349,31 @@ section{position:relative}
 .lf-text{font-family:var(--fm);font-size:10px;letter-spacing:.06em;color:var(--txM);line-height:1.5}
 .lf-text strong{color:var(--tx);font-weight:400}
 .lf-time{font-family:var(--fm);font-size:9px;color:var(--txD);letter-spacing:.08em;margin-left:auto;flex-shrink:0}
-.slot-machine{border:1px solid rgba(151,146,227,.3);background:rgba(255,255,255,.8);padding:34px;text-align:center}
-.sm-h{font-family:var(--fd);font-weight:700;font-size:22px;letter-spacing:-.02em;margin-bottom:8px}
-.sm-sub{font-family:var(--fm);font-size:11px;letter-spacing:.07em;color:var(--txM);margin-bottom:24px;line-height:1.7}
-.sm-display{height:80px;border:1px solid rgba(151,146,227,.3);background:rgba(8,6,8,.5);display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden}
-.sm-display::before{content:'';position:absolute;top:0;left:0;right:0;height:18px;background:linear-gradient(rgba(8,6,8,.8),transparent);z-index:2}
-.sm-display::after{content:'';position:absolute;bottom:0;left:0;right:0;height:18px;background:linear-gradient(transparent,rgba(8,6,8,.8));z-index:2}
-.sm-reel-item{font-family:var(--fd);font-weight:800;font-size:38px;color:var(--lav);letter-spacing:-.04em}
-.sm-result{font-family:var(--fm);font-size:9px;letter-spacing:.18em;color:var(--txD);text-transform:uppercase;min-height:14px;margin-bottom:14px}
-.sm-btn{font-family:var(--fm);font-size:10px;letter-spacing:.25em;text-transform:uppercase;background:var(--lav);color:var(--bg);border:none;padding:12px 28px;cursor:none;transition:opacity .3s,transform .2s;width:100%;position:relative;overflow:hidden}
-.sm-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.12);transform:translateX(-100%) skewX(-15deg);transition:transform .4s var(--eo)}
-.sm-btn:hover::before{transform:translateX(100%) skewX(-15deg)}
-.sm-btn:hover{opacity:.88;transform:translateY(-1px)}
-.sm-btn:disabled{opacity:.5}
+.slot-machine{background:#0e0c0e;border-radius:16px;padding:36px 28px;text-align:center;position:relative;overflow:hidden}
+.slot-machine::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(151,146,227,.12),transparent 70%);pointer-events:none}
+.sm-h{font-family:var(--fd);font-weight:700;font-size:22px;letter-spacing:-.02em;margin-bottom:8px;color:#F5EFED}
+.sm-sub{font-family:var(--fm);font-size:11px;letter-spacing:.07em;color:rgba(245,239,237,.45);margin-bottom:28px;line-height:1.7}
+.sm-ticker{background:rgba(151,146,227,.12);border-bottom:1px solid rgba(151,146,227,.15);padding:8px 16px;margin:-36px -28px 24px;font-family:var(--fm);font-size:9px;letter-spacing:.2em;color:rgba(151,146,227,.7);text-transform:uppercase;white-space:nowrap;overflow:hidden}
+.sm-ticker-inner{display:inline-block;animation:tickerScroll 14s linear infinite}
+@keyframes tickerScroll{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+.sm-reels{display:flex;gap:10px;margin-bottom:24px;height:140px;position:relative}
+.sm-reel{flex:1;background:#1a1620;border-radius:10px;overflow:hidden;position:relative;border:1px solid rgba(151,146,227,.15)}
+.sm-reel::before,.sm-reel::after{content:'';position:absolute;left:0;right:0;height:36px;z-index:3;pointer-events:none}
+.sm-reel::before{top:0;background:linear-gradient(#1a1620,transparent)}
+.sm-reel::after{bottom:0;background:linear-gradient(transparent,#1a1620)}
+.sm-reel-track{display:flex;flex-direction:column;align-items:center;transition:transform .05s linear}
+.sm-reel-track.landing{transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.sm-digit{height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:800;font-size:42px;color:#EE6352;letter-spacing:-.04em;line-height:1;width:100%}
+.sm-center-line{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:48px;border-top:1px solid rgba(238,99,82,.3);border-bottom:1px solid rgba(238,99,82,.3);background:rgba(238,99,82,.04);pointer-events:none;z-index:2}
+.sm-label{font-family:var(--fm);font-size:8px;letter-spacing:.25em;color:rgba(245,239,237,.3);text-transform:uppercase;margin-bottom:20px;min-height:14px;transition:all .3s}
+.sm-label.revealed{color:var(--lav);letter-spacing:.15em}
+.sm-btn{font-family:var(--fm);font-size:11px;letter-spacing:.28em;text-transform:uppercase;background:#EE6352;color:#fff;border:none;padding:16px 28px;cursor:none;transition:opacity .3s,transform .2s,box-shadow .3s;width:100%;position:relative;overflow:hidden;border-radius:8px;font-weight:600}
+.sm-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:rgba(255,255,255,.2);transform:skewX(-20deg);transition:left .5s ease}
+.sm-btn:hover::before{left:150%}
+.sm-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(238,99,82,.4)}
+.sm-btn:disabled{opacity:.5;transform:none;box-shadow:none}
+.sm-spins{font-family:var(--fm);font-size:9px;letter-spacing:.15em;color:rgba(245,239,237,.3);margin-top:14px;text-transform:uppercase}
+.sm-spins span{color:rgba(245,239,237,.6)}
 
 /* WAITLIST */
 #waitlist{background:var(--bg2);position:relative;overflow:hidden}
@@ -1041,11 +1053,18 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         <div class="lf-body" id="lfBody"></div>
       </div>
       <div class="slot-machine km-right">
+        <div class="sm-ticker"><span class="sm-ticker-inner">Roll 7-7-7 and win the jackpot &nbsp;•&nbsp; Spin to reveal your queue rank &nbsp;•&nbsp; Number rises every minute &nbsp;•&nbsp; Early members get priority access &nbsp;•&nbsp; Roll 7-7-7 and win the jackpot &nbsp;•&nbsp;</span></div>
         <div class="sm-h">Reveal Your Queue Rank</div>
         <p class="sm-sub">Spin to preview where you'll land. The number gets higher every minute.</p>
-        <div class="sm-display"><div class="sm-reel-item" id="smNum">#???</div></div>
-        <div class="sm-result" id="smResult"></div>
+        <div class="sm-reels">
+          <div class="sm-center-line"></div>
+          <div class="sm-reel"><div class="sm-reel-track" id="reel0"><div class="sm-digit">?</div></div></div>
+          <div class="sm-reel"><div class="sm-reel-track" id="reel1"><div class="sm-digit">?</div></div></div>
+          <div class="sm-reel"><div class="sm-reel-track" id="reel2"><div class="sm-digit">?</div></div></div>
+        </div>
+        <div class="sm-label" id="smResult">YOUR POSITION IN QUEUE</div>
         <button class="sm-btn" id="smBtn">SPIN TO REVEAL POSITION →</button>
+        <div class="sm-spins">spin for <span>free</span> &nbsp;•&nbsp; <span id="spinsLeft">3</span> spins left</div>
       </div>
     </div>
   </div>
@@ -1425,27 +1444,97 @@ for(let i=0;i<5;i++)setTimeout(addFeed,i*200);
 setInterval(addFeed,3200);
 
 /* SLOT MACHINE */
-const smBtn=document.getElementById('smBtn');
-let baseCount=1248;
-smBtn?.addEventListener('click',()=>{
-  if(smBtn.disabled)return;
-  smBtn.disabled=true;smBtn.textContent='SPINNING...';
-  const final=baseCount+Math.floor(Math.random()*50);
-  let ticks=0;
-  const sv=setInterval(()=>{
-    const smN=document.getElementById('smNum');
-    if(smN)smN.textContent='#'+Math.floor(Math.random()*3000+500).toLocaleString('en-IN');
-    ticks++;
-    if(ticks>18){
-      clearInterval(sv);
-      if(smN)smN.textContent='#'+final.toLocaleString('en-IN');
-      const r=document.getElementById('smResult');
-      if(r)r.textContent=final<=500?'TRAILBLAZER TIER — Join now to lock this in!':final<=1500?'INSIDER TIER — Great position!':'PIONEER TIER — Early access secured';
-      smBtn.textContent='SECURE THIS POSITION →';
-      smBtn.disabled=false;
+/* ── CRED-STYLE SLOT MACHINE ── */
+(function(){
+  const DIGIT_H = 46;
+  const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
+  let spinsLeft = 3;
+  let baseCount = 1248;
+
+  function buildReel(id){
+    const track = document.getElementById(id);
+    if(!track) return;
+    // Build 30 digits for scroll effect
+    let html = '';
+    for(let i=0;i<30;i++){
+      html += '<div class="sm-digit">'+DIGITS[Math.floor(Math.random()*10)]+'</div>';
     }
-  },80);
-});
+    track.innerHTML = html;
+    track.style.transform = 'translateY(0)';
+  }
+
+  ['reel0','reel1','reel2'].forEach(buildReel);
+
+  function spinReel(id, finalDigit, delay){
+    return new Promise(resolve=>{
+      const track = document.getElementById(id);
+      if(!track){resolve();return;}
+      const items = track.querySelectorAll('.sm-digit');
+      // Set final digit on last item
+      items[items.length-1].textContent = finalDigit;
+      // Fast scroll up, then snap to final
+      const totalH = (items.length - 2) * DIGIT_H;
+      track.style.transition = 'none';
+      track.style.transform = 'translateY(0)';
+      // Animate
+      setTimeout(()=>{
+        track.classList.remove('landing');
+        track.style.transition = `transform ${0.08 + delay*0.01}s linear`;
+        // Rapid tick
+        let ticks = 0;
+        const tickInterval = setInterval(()=>{
+          ticks++;
+          track.style.transition = 'none';
+          const randomOffset = -Math.floor(Math.random()*(items.length-4))*DIGIT_H;
+          track.style.transform = `translateY(${randomOffset}px)`;
+          if(ticks > 12 + delay*2){
+            clearInterval(tickInterval);
+            // Land on final — second to last position (visible in center)
+            track.classList.add('landing');
+            track.style.transition = `transform ${0.5 + delay*0.15}s cubic-bezier(.22,1,.36,1)`;
+            const landPos = -(items.length - 2) * DIGIT_H + DIGIT_H;
+            track.style.transform = `translateY(${landPos}px)`;
+            setTimeout(resolve, 600 + delay*150);
+          }
+        }, 60);
+      }, delay * 120);
+    });
+  }
+
+  const smBtn = document.getElementById('smBtn');
+  smBtn?.addEventListener('click', async ()=>{
+    if(smBtn.disabled || spinsLeft <= 0) return;
+    spinsLeft--;
+    document.getElementById('spinsLeft').textContent = spinsLeft;
+    smBtn.disabled = true;
+    smBtn.textContent = 'SPINNING...';
+    const result = document.getElementById('smResult');
+    if(result){ result.textContent = ''; result.classList.remove('revealed'); }
+
+    const final = baseCount + Math.floor(Math.random()*80);
+    baseCount = final;
+    // Pick 3 digits from final number (last 3)
+    const numStr = String(final).padStart(3,'0');
+    const d0 = numStr[numStr.length-3] || '1';
+    const d1 = numStr[numStr.length-2] || '2';
+    const d2 = numStr[numStr.length-1] || '5';
+
+    await Promise.all([
+      spinReel('reel0', d0, 0),
+      spinReel('reel1', d1, 1),
+      spinReel('reel2', d2, 2),
+    ]);
+
+    if(result){
+      const tier = final<=500?'🔥 TRAILBLAZER — Lock this in now!':final<=1500?'⚡ INSIDER TIER — Great spot!':'✓ PIONEER — Early access secured';
+      result.textContent = '#'+final.toLocaleString('en-IN')+' · '+tier;
+      result.classList.add('revealed');
+    }
+    smBtn.textContent = spinsLeft > 0 ? 'SPIN AGAIN →' : 'SECURE THIS POSITION →';
+    smBtn.disabled = false;
+    smBtn.onclick = spinsLeft <= 0 ? ()=>document.getElementById('waitlist')?.scrollIntoView({behavior:'smooth'}) : null;
+  });
+})();
 
 /* CAPACITY BAR — removed, using 10K bar */
 
