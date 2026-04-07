@@ -947,46 +947,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
       </div>
       <div class="magic-demo reveal d2">
         <div class="demo-lbl">INTERACTIVE FIT PREVIEW</div>
-        <div class="demo-stage">
+        <div class="demo-stage" style="width:280px;height:420px">
           <div class="demo-glow-r"></div>
-          <svg class="demo-fig l" id="demoBig" viewBox="0 0 200 340" width="210" height="340">
-            <defs>
-              <linearGradient id="dBG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#9792E3" stop-opacity=".6"/><stop offset="1" stop-color="#42213D" stop-opacity=".9"/></linearGradient>
-              <linearGradient id="dOG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#EE6352" stop-opacity=".8"/><stop offset="1" stop-color="#42213D" stop-opacity=".95"/></linearGradient>
-              <!-- Per-size outfit gradients -->
-              <linearGradient id="ogS" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#508AA8" stop-opacity=".9"/><stop offset="1" stop-color="#1a3a4a" stop-opacity=".95"/></linearGradient>
-              <linearGradient id="ogM" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#EE6352" stop-opacity=".8"/><stop offset="1" stop-color="#42213D" stop-opacity=".95"/></linearGradient>
-              <linearGradient id="ogL" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#9792E3" stop-opacity=".8"/><stop offset="1" stop-color="#2a1a3e" stop-opacity=".95"/></linearGradient>
-              <linearGradient id="ogXL" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#F5EFED" stop-opacity=".65"/><stop offset="1" stop-color="#42213D" stop-opacity=".95"/></linearGradient>
-              <linearGradient id="pgS" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#1a3a4a" stop-opacity=".95"/><stop offset="1" stop-color="#0a1520" stop-opacity="1"/></linearGradient>
-              <linearGradient id="pgM" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#EE6352" stop-opacity=".75"/><stop offset="1" stop-color="#42213D" stop-opacity=".98"/></linearGradient>
-              <linearGradient id="pgL" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#9792E3" stop-opacity=".6"/><stop offset="1" stop-color="#1a0a2e" stop-opacity=".95"/></linearGradient>
-              <linearGradient id="pgXL" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#42213D" stop-opacity=".9"/><stop offset="1" stop-color="#0a0608" stop-opacity="1"/></linearGradient>
-            </defs>
-            <!-- Head & neck (static) -->
-            <ellipse cx="100" cy="30" rx="22" ry="26" fill="url(#dBG)" stroke="rgba(151,146,227,.5)" stroke-width="1"/>
-            <rect x="93" y="54" width="14" height="14" fill="url(#dBG)"/>
-            <!-- Outfit top - ID for JS update -->
-            <path id="ofTop" d="M58 68L40 85L38 138L162 138L160 85L142 68Q125 62 100 62Q75 62 58 68Z" fill="url(#ogM)" stroke="rgba(238,99,82,.5)" stroke-width="1"/>
-            <!-- Sleeves -->
-            <path id="ofArmL" d="M40 85L20 105L27 128L38 138Z" fill="url(#ogM)" stroke="rgba(238,99,82,.4)" stroke-width=".5"/>
-            <path id="ofArmR" d="M160 85L180 105L173 128L162 138Z" fill="url(#ogM)" stroke="rgba(238,99,82,.4)" stroke-width=".5"/>
-            <!-- Waist band -->
-            <path id="ofWaist" d="M46 138L50 170L150 170L154 138Z" fill="url(#dBG)" opacity=".5"/>
-            <!-- Pants -->
-            <path id="ofPants" d="M47 168L44 270L92 270L100 248L108 270L156 270L153 168Z" fill="url(#pgM)" stroke="rgba(238,99,82,.4)" stroke-width="1" opacity=".85"/>
-            <!-- Legs -->
-            <path id="ofLegs" d="M73 268L68 332L96 332L100 302L104 332L132 332L127 268Z" fill="url(#dBG)" stroke="rgba(151,146,227,.3)" stroke-width=".5"/>
-            <!-- Size label badge on outfit -->
-            <rect id="ofBadge" x="84" y="88" width="32" height="14" rx="2" fill="rgba(0,0,0,.4)" stroke="rgba(238,99,82,.4)" stroke-width=".5" opacity=".8"/>
-            <text id="ofBadgeTxt" x="100" y="98" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(238,99,82,.9)" letter-spacing="1">SIZE M</text>
-            <!-- Measurement line -->
-            <line x1="30" y1="138" x2="170" y2="138" stroke="rgba(80,138,168,.4)" stroke-width="1" stroke-dasharray="3 3"/>
-            <circle cx="30" cy="138" r="2.5" fill="#508AA8" opacity=".7"/><circle cx="170" cy="138" r="2.5" fill="#508AA8" opacity=".7"/>
-            <!-- Scan beam -->
-            <rect id="ofScan" x="30" y="60" width="140" height="2" fill="rgba(151,146,227,.5)" opacity="0"><animate attributeName="y" values="60;330;60" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.6;0" dur="3s" repeatCount="indefinite"/></rect>
-          </svg>
-        </div>
+          <img id="demoBig" src="https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png" alt="Size L" style="width:100%;height:100%;object-fit:contain;transition:opacity .3s ease,transform .5s cubic-bezier(.16,1,.3,1)" class="demo-fig l"/>        </div>
         <div class="sz-btns">
           <button class="sz-btn" data-s="s">S</button>
           <button class="sz-btn" data-s="m">M</button>
@@ -995,9 +958,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         </div>
         <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
         <div class="stat-row">
-          <div class="stat-i km-pop"><div class="stat-n">97%</div><div class="stat-l">Fit Score</div></div>
-          <div class="stat-i km-pop"><div class="stat-n">0</div><div class="stat-l">Returns</div></div>
-          <div class="stat-i km-pop"><div class="stat-n">10s</div><div class="stat-l">Scan</div></div>
+          <div class="stat-i"><div class="stat-n">97%</div><div class="stat-l">Fit Score</div></div>
+          <div class="stat-i"><div class="stat-n">0</div><div class="stat-l">Returns</div></div>
+          <div class="stat-i"><div class="stat-n">10s</div><div class="stat-l">Scan</div></div>
         </div>
       </div>
     </div>
@@ -1399,7 +1362,12 @@ function applyOutfit(s){
   const scan=document.getElementById('ofScan');
   if(scan){scan.style.opacity='1';setTimeout(()=>scan.style.opacity='',600);}
   // also update scale
-  const db=document.getElementById('demoBig');if(db)db.className='demo-fig '+s;
+  const db=document.getElementById('demoBig');
+  if(db){
+    const srcs={'s':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594681/VTON_S-removebg-preview_ihi5ne.png','m':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594642/VTON_M-removebg-preview_zquq24.png','l':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png','xl':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594702/VTON_XL-removebg-preview_ruvdq6.png'};
+    db.style.opacity='0';
+    setTimeout(()=>{db.src=srcs[s];db.style.opacity='1';db.className='demo-fig '+s;},200);
+  }
 }
 applyOutfit('l');
 document.querySelectorAll('.sz-btn').forEach(b=>{
