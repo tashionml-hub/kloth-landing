@@ -268,7 +268,7 @@ section{position:relative}
 .demo-fig{position:relative;z-index:1;transition:transform .7s var(--eo)}
 .demo-fig.s{transform:scale(.82)}.demo-fig.m{transform:scale(.93)}.demo-fig.l{transform:scale(1)}.demo-fig.xl{transform:scale(1.1)}
 .sz-btns{display:flex;gap:8px}
-.sz-btn{font-family:var(--fm);font-size:11px;letter-spacing:.2em;width:42px;height:42px;border:1px solid var(--bdr);background:var(--sur);color:var(--txM);cursor:none;transition:all .3s var(--eo);display:flex;align-items:center;justify-content:center}
+.sz-btn{font-family:var(--fm);font-size:11px;letter-spacing:.2em;width:42px;height:42px;border:1px solid var(--bdr);background:var(--sur);color:var(--txM);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all .3s var(--eo);display:flex;align-items:center;justify-content:center;user-select:none}
 .sz-btn:hover{border-color:var(--bdrH);color:var(--tx)}
 .sz-btn.on{border-color:var(--coral);background:rgba(238,99,82,.12);color:var(--coral)}
 .sz-info{text-align:center;font-family:var(--fm);font-size:11px;color:var(--txM);letter-spacing:.07em;min-height:18px;transition:opacity .3s}
@@ -1336,21 +1336,25 @@ const _szSrcs={
   'xl':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594702/VTON_XL-removebg-preview_ruvdq6.png'
 };
 window.switchSize=function(s){
-  // Update active button
   document.querySelectorAll('.sz-btn').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.sz-btn').forEach(x=>{if(x.textContent.trim().toLowerCase()===s)x.classList.add('on');});
-  // Swap image
   const db=document.getElementById('demoBig');
   if(db && _szSrcs[s]){
     db.style.opacity='0';
     setTimeout(()=>{db.src=_szSrcs[s];db.style.opacity='1';},180);
   }
-  // Update label
   const si=document.getElementById('szInfo');
   if(si){si.style.opacity='0';setTimeout(()=>{si.textContent=szData[s];si.style.opacity='1';},180);}
-  // Update hero chips
   ['S','M','L','XL'].forEach(id=>{const el=document.getElementById('hc'+id);if(el)el.classList.toggle('on',id.toLowerCase()===s);});
 };
+// Attach both click and touchend for maximum mobile compatibility
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.sz-btn').forEach(function(btn){
+    var s=btn.textContent.trim().toLowerCase();
+    btn.addEventListener('touchend',function(e){e.preventDefault();window.switchSize(s);});
+    btn.addEventListener('click',function(){window.switchSize(s);});
+  });
+});
 window.switchSize('l');
 
 /* TIER BARS */
