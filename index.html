@@ -925,11 +925,11 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         <div class="demo-stage" style="width:280px;height:420px">
           <div class="demo-glow-r"></div>
           <img id="demoBig" src="https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png" alt="Size L" style="width:100%;height:100%;object-fit:contain;transition:opacity .3s ease,transform .5s cubic-bezier(.16,1,.3,1)" class="demo-fig l"/>        </div>
-        <div class="sz-btns">
-          <button class="sz-btn" data-s="s">S</button>
-          <button class="sz-btn" data-s="m">M</button>
-          <button class="sz-btn on" data-s="l">L</button>
-          <button class="sz-btn" data-s="xl">XL</button>
+        <div class="sz-btns" id="szBtns">
+          <button class="sz-btn" onclick="switchSize('s')">S</button>
+          <button class="sz-btn" onclick="switchSize('m')">M</button>
+          <button class="sz-btn on" onclick="switchSize('l')">L</button>
+          <button class="sz-btn" onclick="switchSize('xl')">XL</button>
         </div>
         <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
         <div class="stat-row">
@@ -1329,29 +1329,29 @@ const outfitCfg={
     label:'Oversized — street-style drape'
   }
 };
-function applyOutfit(s){
-  const srcs={
-    's':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594681/VTON_S-removebg-preview_ihi5ne.png',
-    'm':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594642/VTON_M-removebg-preview_zquq24.png',
-    'l':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png',
-    'xl':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594702/VTON_XL-removebg-preview_ruvdq6.png'
-  };
+const _szSrcs={
+  's':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594681/VTON_S-removebg-preview_ihi5ne.png',
+  'm':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594642/VTON_M-removebg-preview_zquq24.png',
+  'l':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png',
+  'xl':'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594702/VTON_XL-removebg-preview_ruvdq6.png'
+};
+window.switchSize=function(s){
+  // Update active button
+  document.querySelectorAll('.sz-btn').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.sz-btn').forEach(x=>{if(x.textContent.trim().toLowerCase()===s)x.classList.add('on');});
+  // Swap image
   const db=document.getElementById('demoBig');
-  if(db && srcs[s]){
+  if(db && _szSrcs[s]){
     db.style.opacity='0';
-    setTimeout(()=>{db.src=srcs[s];db.style.opacity='1';db.className='demo-fig '+s;},200);
+    setTimeout(()=>{db.src=_szSrcs[s];db.style.opacity='1';},180);
   }
-}
-applyOutfit('l');
-document.querySelectorAll('.sz-btn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.sz-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');
-    const s=b.dataset.s;
-    applyOutfit(s);
-    const si=document.getElementById('szInfo');if(si){si.style.opacity='0';setTimeout(()=>{si.textContent=szData[s];si.style.opacity='1'},260)}
-    ['S','M','L','XL'].forEach(id=>{const el=document.getElementById('hc'+id);if(el)el.classList.toggle('on',id.toLowerCase()===s)});
-  });
-});
+  // Update label
+  const si=document.getElementById('szInfo');
+  if(si){si.style.opacity='0';setTimeout(()=>{si.textContent=szData[s];si.style.opacity='1';},180);}
+  // Update hero chips
+  ['S','M','L','XL'].forEach(id=>{const el=document.getElementById('hc'+id);if(el)el.classList.toggle('on',id.toLowerCase()===s);});
+};
+window.switchSize('l');
 
 /* TIER BARS */
 const tob=new IntersectionObserver(es=>es.forEach(e=>{
