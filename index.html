@@ -142,7 +142,7 @@ section{position:relative}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
 /* PROBLEM */
-#problem{background:#EDE8E6}
+#problem{background:#EDE8E6;overflow:hidden}
 #problem::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
 .prob-head{text-align:center;margin-bottom:48px}
 .prob-title{font-family:var(--fe);font-style:italic;font-weight:300;font-size:clamp(38px,5vw,72px);line-height:1.1;color:var(--steel)}
@@ -498,11 +498,13 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
   .stat-row { justify-content: center; }
 }
 
-.prob-video-wrap{margin:32px 0 48px;padding:0 clamp(0px,2vw,40px)}
+
 @media(max-width:900px){
-  .prob-video-wrap{margin:24px 0 32px;padding:0}
-  .prob-video-wrap video{border-radius:8px}
 }
+
+#problem .si{padding-left:0;padding-right:0;padding-bottom:0}
+#problem .prob-head{padding:0 clamp(24px,5vw,80px) 48px}
+#problem .prob-loop{padding:0 clamp(24px,5vw,80px);margin-bottom:0}
 </style>
 
 <style id="kloth-motion">
@@ -710,11 +712,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
       <div class="slbl" style="justify-content:center">01 — THE REALITY</div>
       <div class="prob-title"><em>Online fashion is a</em><strong>guessing game.</strong></div>
     </div>
-    <div class="prob-video-wrap">
-      <video autoplay loop muted playsinline
-        style="width:100%;max-width:900px;display:block;margin:0 auto;border-radius:12px;box-shadow:0 24px 64px rgba(45,14,40,.12)"
-        src="https://res.cloudinary.com/dtdeahdh6/video/upload/v1775634237/Scene_rw3dr9.mp4"></video>
-    </div>
+    <video autoplay loop muted playsinline
+      style="width:100%;display:block"
+      src="https://res.cloudinary.com/dtdeahdh6/video/upload/v1775634237/Scene_rw3dr9.mp4"></video>
         <div class="prob-loop reveal d2" id="probLoop">
       <div class="loop-step active"><div class="loop-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14V8a6 6 0 0112 0v6" stroke="rgba(238,99,82,.7)" stroke-width="1.2"/><rect x="2" y="14" width="16" height="5" rx="1" stroke="rgba(238,99,82,.7)" stroke-width="1.2"/></svg></div><div class="loop-lbl">Browse</div></div>
       <div class="loop-arr">→</div>
