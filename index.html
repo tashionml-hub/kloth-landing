@@ -1060,9 +1060,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
     <h2 class="wl-title km-wipe">THE FUTURE<span class="wa">is fit.</span></h2>
     <p class="wl-sub reveal d2">Be among the first. Claim your tier now before spots fill.</p>
     <div class="cap-wrap reveal d2">
-      <div class="cap-lbl"><span>BETA CAPACITY</span><span>68% FILLED</span></div>
+      <div class="cap-lbl"><span>BETA CAPACITY</span><span id="capLblPct">12.5% FILLED</span></div>
       <div class="cap-track"><div class="cap-fill" id="capFill"></div><div class="cap-glow"></div></div>
-      <div class="cap-pct-row"><div class="cap-pct">68<span>% filled</span></div></div>
+      <div class="cap-pct-row"><div class="cap-pct"><span id="capPctNum">12.5</span><span>% filled</span></div></div>
     </div>
     <div class="urg-row km-up">
       <div class="u-pill live"><span class="u-dot"></span><span id="liveNum">1,247</span> WAITING</div>
@@ -1081,13 +1081,13 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         </div>
         <div class="ref-box"><div class="ref-h">Jump the Queue →</div><p class="ref-p">Refer 3 friends = move up 30 spots instantly</p><div class="ref-btn" id="refBtn">COPY INVITE LINK</div></div>
       </div>
-      <form id="wlForm" novalidate>
+      <form id="wlForm" novalidate onsubmit="return false">
         <div class="fg">
           <div class="ff"><label class="fl" for="fn">Full Name</label><input class="fi" type="text" id="fn" placeholder="Your name" required autocomplete="name"></div>
           <div class="ff"><label class="fl" for="fwa">WhatsApp Number</label><input class="fi" type="tel" id="fwa" placeholder="+91 98765 43210" required autocomplete="tel"></div>
           <div class="ff full"><label class="fl" for="fe">Email Address</label><input class="fi" type="email" id="fe" placeholder="you@example.com" required autocomplete="email"></div>
         </div>
-        <button type="submit" class="fsub">STOP GUESSING — CLAIM YOUR SPOT →</button>
+        <button type="button" class="fsub" id="wlSubmitBtn">STOP GUESSING — CLAIM YOUR SPOT →</button>
         <p class="fnote">No spam. Just your first fit session when we launch.</p>
       </form>
     </div>
@@ -1402,6 +1402,7 @@ setInterval(addFeed,3200);
   const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
   let spinsLeft = 3;
   let baseCount = (typeof cnt !== "undefined") ? cnt : 1248;
+  const MAX_QUEUE = 10000;
 
   function buildReel(id){
     const track = document.getElementById(id);
@@ -1463,7 +1464,7 @@ setInterval(addFeed,3200);
     const result = document.getElementById('smResult');
     if(result){ result.textContent = ''; result.classList.remove('revealed'); }
 
-    const final = baseCount + Math.floor(Math.random()*80);
+    const final = Math.min(MAX_QUEUE, baseCount + Math.floor(Math.random()*150 + 50));
     baseCount = final;
     // Pick 3 digits from final number (last 3)
     const numStr = String(final).padStart(3,'0');
@@ -1478,7 +1479,7 @@ setInterval(addFeed,3200);
     ]);
 
     if(result){
-      const tier = final<=2000?'🔥 TRAILBLAZER — Lock this in now!':final<=5000?'⚡ INSIDER TIER — Great spot!':'✓ PIONEER — Early access secured';
+      const tier = final<=1500?'🔥 TRAILBLAZER — Lock this in now!':final<=4000?'⚡ INSIDER TIER — Great spot!':final<=7000?'✓ PIONEER — Early access secured':'🏁 MEMBER — You made it!';
       result.textContent = '#'+final.toLocaleString('en-IN')+' · '+tier;
       result.classList.add('revealed');
     }
@@ -1524,11 +1525,12 @@ setInterval(()=>{
     if(hc)hc.textContent=fmt;
     const ln=document.getElementById('liveNum');if(ln)ln.textContent=fmt;
     if(typeof update10KBar==='function')update10KBar(cnt);
+    const _p=Math.min(100,(cnt/10000)*100);const cf2=document.getElementById('capFill');if(cf2)cf2.style.width=_p.toFixed(1)+'%';const cl2=document.getElementById('capLblPct');if(cl2)cl2.textContent=_p.toFixed(1)+'% FILLED';const cn2=document.getElementById('capPctNum');if(cn2)cn2.textContent=_p.toFixed(1);
   }
 },4500);
 
 /* FORM */
-document.getElementById('wlForm')?.addEventListener('submit',e=>{
+document.getElementById('wlSubmitBtn')?.addEventListener('click',e=>{
   e.preventDefault();
   const fn=document.getElementById('fn').value.trim();
   const fwa=document.getElementById('fwa').value.trim();
@@ -2046,7 +2048,10 @@ loadQuestion(0);
 /* ═══════ INTERSECT TIER BARS IN GAME SECTION ═══════ */
 const tierCapObs=new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting)return;
-  const cf=document.getElementById('capFill');if(cf)cf.style.width='68%';
+  const _pct=Math.min(100,(cnt/10000)*100);
+  const cf=document.getElementById('capFill');if(cf)cf.style.width=_pct.toFixed(1)+'%';
+  const cl=document.getElementById('capLblPct');if(cl)cl.textContent=_pct.toFixed(1)+'% FILLED';
+  const cn=document.getElementById('capPctNum');if(cn)cn.textContent=_pct.toFixed(1);
   tierCapObs.unobserve(e.target);
 }),{threshold:.2});
 const wl=document.getElementById('waitlist');if(wl)tierCapObs.observe(wl);
