@@ -1513,10 +1513,20 @@ function update10KBar(count){
   if(openEl)openEl.textContent=(TOTAL_SPOTS-count).toLocaleString('en-IN')+' spots still open';
   if(urgEl)urgEl.textContent=pct>85?'Almost full — join now!':pct>60?'Over half full — hurry!':'Filling fast — join before it closes';
 }
-setTimeout(()=>update10KBar(cnt),600);
-
 /* COUNTER */
 let cnt=1247;
+setTimeout(()=>{
+  update10KBar(cnt);
+  // Hardcode capFill on load
+  const _initPct=(cnt/10000*100).toFixed(1);
+  const cf=document.getElementById('capFill');
+  if(cf){cf.style.transition='none';cf.style.width=_initPct+'%';setTimeout(()=>cf.style.transition='width 2s cubic-bezier(.16,1,.3,1)',100);}
+  const cl=document.getElementById('capLblPct');if(cl)cl.textContent=_initPct+'% FILLED';
+  const cn=document.getElementById('capPctNum');if(cn)cn.textContent=_initPct;
+  const hc=document.getElementById('heroCount');if(hc)hc.textContent=cnt.toLocaleString('en-IN');
+  const ln=document.getElementById('liveNum');if(ln)ln.textContent=cnt.toLocaleString('en-IN');
+  const wl10k=document.getElementById('wl10kCount');if(wl10k)wl10k.textContent=cnt.toLocaleString('en-IN');
+},300);
 setInterval(()=>{
   if(Math.random()<.35){
     cnt++;
