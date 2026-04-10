@@ -1050,6 +1050,90 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         <button class="sm-btn" id="smBtn">SPIN TO REVEAL POSITION →</button>
         <div class="sm-spins">spin for <span>free</span> &nbsp;•&nbsp; <span id="spinsLeft">3</span> spins left</div>
       </div>
+      <script>
+      (function(){
+        var DH = 46;
+        var TOTAL = 24;
+        var _spinsLeft = 3;
+        var _base = 1300;
+
+        function buildReel(id){
+          var t = document.getElementById(id);
+          if(!t) return;
+          var s = '';
+          for(var i=0;i<TOTAL;i++) s += '<div class="sm-digit">'+Math.floor(Math.random()*10)+'</div>';
+          t.innerHTML = s;
+          t.style.transition = 'none';
+          t.style.transform = 'translateY(0px)';
+        }
+        ['reel0','reel1','reel2','reel3'].forEach(buildReel);
+
+        function spinReel(id, digit, delay){
+          return new Promise(function(ok){
+            var t = document.getElementById(id);
+            if(!t){ok();return;}
+            var items = t.querySelectorAll('.sm-digit');
+            var landIdx = TOTAL - 4;
+            items[landIdx].textContent = digit;
+            t.style.transition = 'none';
+            t.style.transform = 'translateY(0px)';
+            setTimeout(function(){
+              var ticks = 0, maxT = 16 + delay*4;
+              var iv = setInterval(function(){
+                ticks++;
+                t.style.transition = 'none';
+                t.style.transform = 'translateY(-'+(Math.floor(Math.random()*(TOTAL-8)+2)*DH)+'px)';
+                if(ticks>=maxT){
+                  clearInterval(iv);
+                  var lp = (landIdx-1)*DH;
+                  t.style.transition = 'transform '+(0.5+delay*0.1)+'s cubic-bezier(0.22,1,0.36,1)';
+                  t.style.transform = 'translateY(-'+lp+'px)';
+                  setTimeout(ok, (0.5+delay*0.1)*1000+100);
+                }
+              },55);
+            }, delay*140);
+          });
+        }
+
+        var btn = document.getElementById('smBtn');
+        if(btn){
+          btn.addEventListener('click', function(){
+            if(btn.disabled || _spinsLeft<=0) return;
+            _spinsLeft--;
+            var sl = document.getElementById('spinsLeft');
+            if(sl) sl.textContent = _spinsLeft;
+            btn.disabled = true;
+            btn.textContent = 'SPINNING...';
+            var res = document.getElementById('smResult');
+            if(res){res.textContent='YOUR POSITION IN QUEUE';res.classList.remove('revealed');}
+            var final = Math.min(9999, _base + Math.floor(Math.random()*200+80));
+            _base = final;
+            var ns = String(final).padStart(4,'0');
+            Promise.all([
+              spinReel('reel0',ns[0],0),
+              spinReel('reel1',ns[1],1),
+              spinReel('reel2',ns[2],2),
+              spinReel('reel3',ns[3],3)
+            ]).then(function(){
+              if(res){
+                var tier = final<=1500?'🔥 TRAILBLAZER':final<=4000?'⚡ INSIDER':final<=7000?'✓ PIONEER':'🏁 MEMBER';
+                res.textContent='#'+final.toLocaleString('en-IN')+' · '+tier;
+                res.classList.add('revealed');
+              }
+              try{
+                if(typeof cnt!=='undefined'){cnt=Math.max(cnt,final);}
+                if(typeof update10KBar==='function') update10KBar(cnt);
+                var hc=document.getElementById('heroCount');if(hc)hc.textContent=cnt.toLocaleString('en-IN');
+                var ln=document.getElementById('liveNum');if(ln)ln.textContent=cnt.toLocaleString('en-IN');
+              }catch(e){}
+              btn.disabled=false;
+              if(_spinsLeft>0){btn.textContent='SPIN AGAIN →';}
+              else{btn.textContent='SECURE THIS POSITION →';btn.onclick=function(){var w=document.getElementById('waitlist');if(w)w.scrollIntoView({behavior:'smooth'});};}
+            });
+          });
+        }
+      })();
+      </script>
     </div>
   </div>
 </section>
@@ -1396,118 +1480,7 @@ function addFeed(){
 for(let i=0;i<5;i++)setTimeout(addFeed,i*200);
 setInterval(addFeed,3200);
 
-/* SLOT MACHINE */
-/* ── SLOT MACHINE ── */
-(function(){
-  var DH = 46; // digit height px — must match .sm-digit height in CSS
-  var TOTAL = 20; // items per reel
-  var spinsLeft = 3;
-  var baseCount = (typeof cnt !== 'undefined') ? cnt : 1300;
-
-  // Build each reel with TOTAL random digits
-  function buildReel(id){
-    var track = document.getElementById(id);
-    if(!track) return;
-    var s = '';
-    for(var i=0;i<TOTAL;i++){
-      s += '<div class="sm-digit">'+ Math.floor(Math.random()*10) +'</div>';
-    }
-    track.innerHTML = s;
-    // Reset to top instantly
-    track.style.transition = 'none';
-    track.style.transform = 'translateY(0px)';
-  }
-  ['reel0','reel1','reel2','reel3'].forEach(buildReel);
-
-  // Spin one reel and land on finalDigit
-  function spinReel(id, finalDigit, delay){
-    return new Promise(function(resolve){
-      var track = document.getElementById(id);
-      if(!track){ resolve(); return; }
-
-      // Place finalDigit at index TOTAL-3 (3rd from bottom = lands in center)
-      var items = track.querySelectorAll('.sm-digit');
-      var landIndex = TOTAL - 3;
-      items[landIndex].textContent = finalDigit;
-
-      // Reset to top
-      track.style.transition = 'none';
-      track.style.transform = 'translateY(0px)';
-
-      setTimeout(function(){
-        // Fast random spin phase
-        var ticks = 0;
-        var maxTicks = 14 + delay * 3;
-        var interval = setInterval(function(){
-          ticks++;
-          var rndIdx = Math.floor(Math.random() * (TOTAL - 6)) + 2;
-          track.style.transition = 'none';
-          track.style.transform = 'translateY(-' + (rndIdx * DH) + 'px)';
-
-          if(ticks >= maxTicks){
-            clearInterval(interval);
-            // Smooth land on landIndex — center of 3-row visible window
-            // visible center = landIndex - 1 (because top row is index-1, center is index)
-            var landPos = (landIndex - 1) * DH;
-            track.style.transition = 'transform ' + (0.55 + delay * 0.12) + 's cubic-bezier(0.22,1,0.36,1)';
-            track.style.transform = 'translateY(-' + landPos + 'px)';
-            setTimeout(resolve, (0.55 + delay * 0.12) * 1000 + 80);
-          }
-        }, 55);
-      }, delay * 130);
-    });
-  }
-
-  var smBtn = document.getElementById('smBtn');
-  if(smBtn){
-    smBtn.addEventListener('click', function(){
-      if(smBtn.disabled || spinsLeft <= 0) return;
-      spinsLeft--;
-      var spinsEl = document.getElementById('spinsLeft');
-      if(spinsEl) spinsEl.textContent = spinsLeft;
-      smBtn.disabled = true;
-      smBtn.textContent = 'SPINNING...';
-
-      var result = document.getElementById('smResult');
-      if(result){ result.textContent = 'YOUR POSITION IN QUEUE'; result.classList.remove('revealed'); }
-
-      // Generate final 4-digit number (max 9999)
-      var final = Math.min(9999, baseCount + Math.floor(Math.random() * 200 + 80));
-      baseCount = final;
-
-      // Pad to 4 digits
-      var numStr = String(final).padStart(4,'0');
-      var d0 = numStr[0], d1 = numStr[1], d2 = numStr[2], d3 = numStr[3];
-
-      Promise.all([
-        spinReel('reel0', d0, 0),
-        spinReel('reel1', d1, 1),
-        spinReel('reel2', d2, 2),
-        spinReel('reel3', d3, 3)
-      ]).then(function(){
-        if(result){
-          var tier = final<=1500 ? '🔥 TRAILBLAZER' : final<=4000 ? '⚡ INSIDER' : final<=7000 ? '✓ PIONEER' : '🏁 MEMBER';
-          result.textContent = '#' + final.toLocaleString('en-IN') + ' · ' + tier;
-          result.classList.add('revealed');
-        }
-        // Sync global counter
-        if(typeof cnt !== 'undefined'){
-          cnt = Math.max(cnt, final);
-          if(typeof update10KBar === 'function') update10KBar(cnt);
-          var hc = document.getElementById('heroCount'); if(hc) hc.textContent = cnt.toLocaleString('en-IN');
-          var ln = document.getElementById('liveNum'); if(ln) ln.textContent = cnt.toLocaleString('en-IN');
-        }
-        smBtn.disabled = false;
-        if(spinsLeft > 0){
-          smBtn.textContent = 'SPIN AGAIN →';
-        } else {
-          smBtn.textContent = 'SECURE THIS POSITION →';
-          smBtn.onclick = function(){ document.getElementById('waitlist')?.scrollIntoView({behavior:'smooth'}); };
-        }
-      });
-    });
-  }
-})();
+/* slot machine moved to inline script */
 
 /* CAPACITY BAR — removed, using 10K bar */
 
@@ -1778,7 +1751,7 @@ const wCtx=wheelCanvas?.getContext('2d');
 const prizes=['3 Months\nPremium FREE','Trailblazer\nStatus','100 Free\nTry-Ons','Style\nConsultation','Early Access\n+ Gift','Free First\nMonth','+50 XP\nBonus','Spin Again\nToken'];
 const wheelColors=['#EE6352','#9792E3','#508AA8','rgba(245,239,237,.7)','rgba(238,99,82,.6)','rgba(151,146,227,.6)','rgba(80,138,168,.6)','rgba(245,239,237,.4)'];
 const wedge=2*Math.PI/prizes.length;
-let wheelAngle=0,spinning=false,spinsLeft=2;
+let wheelAngle=0,spinning=false,swSpinsLeft=2;
 
 function drawWheel(angle){
   if(!wCtx)return;
@@ -1812,7 +1785,7 @@ const swResult=document.getElementById('swResult');
 const swSpinsLeft=document.getElementById('swSpinsLeft');
 
 swSpinBtn?.addEventListener('click',()=>{
-  if(spinning||spinsLeft<=0)return;
+  if(spinning||swSpinsLeft<=0)return;
   spinning=true;spinsLeft--;
   swSpinBtn.disabled=true;swSpinBtn.textContent='SPINNING...';
   swResult.textContent='';
@@ -1839,7 +1812,7 @@ swSpinBtn?.addEventListener('click',()=>{
       document.querySelectorAll('.sw-prize').forEach(p=>{p.classList.remove('won');if(parseInt(p.dataset.idx)===prizeIdx)p.classList.add('won')});
       if(spinsLeft>0){swSpinBtn.disabled=false;swSpinBtn.textContent='SPIN AGAIN →';}
       else{swSpinBtn.textContent='NO SPINS LEFT — JOIN TO CLAIM ↓';swSpinBtn.style.background='var(--coral)'}
-      if(swSpinsLeft)swSpinsLeft.textContent=spinsLeft+' SPIN'+(spinsLeft!==1?'S':'')+' REMAINING';
+      if(swSpinsLeft)swSpinsLeft.textContent=swSpinsLeft+' SPIN'+(swSpinsLeft!==1?'S':'')+' REMAINING';
       // XP for spinning
       addXP(100,'spin');document.getElementById('actSpinSt')&&(document.getElementById('actSpinSt').textContent='DONE ✓');
       document.getElementById('act-spin')?.classList.add('done');
