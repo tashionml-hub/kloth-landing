@@ -107,11 +107,11 @@ nav.scrolled{background:rgba(245,239,237,.97);backdrop-filter:blur(20px);backdro
 .hero-h1 em{font-family:var(--fe);font-style:italic;font-weight:300;color:rgba(0,0,0,0.5);display:block;font-size:.58em;text-transform:none;letter-spacing:-.01em;line-height:1.4;margin-top:4px;transition:opacity .4s}
 .hero-sub{margin-top:14px;font-family:var(--fm);font-size:13px;line-height:1.9;color:var(--txM);letter-spacing:.05em;max-width:380px;opacity:0;animation:slideUp .7s var(--eo) .7s forwards}
 .hero-actions{margin-top:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;opacity:0;animation:slideUp .7s var(--eo) .9s forwards}
-.btn-p{font-family:var(--fm);font-size:12px;letter-spacing:.2em;text-transform:uppercase;background:var(--coral);color:var(--bg);padding:15px 34px;cursor:none;transition:transform .3s var(--eo),box-shadow .3s;position:relative;overflow:hidden;display:inline-block}
+.btn-p{font-family:var(--fm);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:var(--coral);color:var(--bg);padding:11px 24px;cursor:pointer;transition:transform .3s var(--eo),box-shadow .3s;position:relative;overflow:hidden;display:inline-block;white-space:nowrap}
 .btn-p::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.12);transform:translateX(-100%) skewX(-15deg);transition:transform .5s var(--eo)}
 .btn-p:hover::before{transform:translateX(100%) skewX(-15deg)}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(238,99,82,.4)}
-.btn-g{font-family:var(--fm);font-size:12px;letter-spacing:.2em;text-transform:uppercase;background:transparent;color:var(--txM);padding:14px 34px;border:1px solid var(--bdr);cursor:none;transition:border-color .3s,color .3s,transform .3s;display:inline-block}
+.btn-g{font-family:var(--fm);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:transparent;color:var(--txM);padding:10px 22px;border:1px solid var(--bdr);cursor:pointer;transition:border-color .3s,color .3s,transform .3s;display:inline-block;white-space:nowrap}
 .btn-g:hover{border-color:var(--bdrH);color:var(--tx);transform:translateY(-2px)}
 .hero-ctr{margin-top:18px;display:flex;align-items:center;gap:12px;opacity:0;animation:slideUp .7s var(--eo) 1.1s forwards}
 .ctr-dots{display:flex;gap:5px}
@@ -143,7 +143,7 @@ section{position:relative}
 
 /* PROBLEM */
 #problem{background:#ffffff;overflow:hidden}
-#problem::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
+#problem::before{display:none}
 .prob-head{text-align:center;margin-bottom:48px}
 .prob-title{font-family:var(--fe);font-style:italic;font-weight:300;font-size:clamp(38px,5vw,72px);line-height:1.1;color:var(--steel)}
 .prob-title strong{font-family:var(--fd);font-style:normal;font-weight:800;color:var(--tx);display:block;font-size:.88em;letter-spacing:-.04em;text-transform:uppercase;line-height:.95}
@@ -476,6 +476,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
   .hero-eyebrow{justify-content:flex-start}
   .hero-sub{margin-left:0;margin-right:0;text-align:left;font-size:11px !important}
   .hero-actions{justify-content:flex-start}
+  .btn-p,.btn-g{width:auto !important;padding:10px 20px !important}
   .hero-ctr{justify-content:flex-start}
 
   .prob-grid{grid-template-columns:1fr!important;display:grid!important}
@@ -507,7 +508,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
 @media(max-width:900px){
 }
 
-#problem .si{padding-left:0;padding-right:0;padding-bottom:0}
+#problem .si{padding-left:0;padding-right:0;padding-bottom:0;padding-top:48px}
 #problem .prob-head{padding:0 clamp(24px,5vw,80px) 48px}
 #problem .prob-loop{padding:0 clamp(24px,5vw,80px);margin-bottom:0}
 </style>
@@ -685,9 +686,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
   </div>
   <div class="hero-inner">
     <div class="hero-copy">
-      <div class="hero-eyebrow">AI-POWERED VIRTUAL TRY-ON</div>
+      <div class="hero-eyebrow">World's First Fit Intelligence Virtual Tryon</div>
       <h1 class="hero-h1"><span id="heroVerb" class="hw">WEAR</span> IT<em id="heroSub">before you buy it</em></h1>
-      <p class="hero-sub">Your AI twin tries on every outfit.<br>Your real body decides.<br>Zero guesses. Zero returns.</p>
+
       <div class="hero-actions">
         <a href="#waitlist" class="btn-p">Join the Waitlist</a>
         <a href="#demo" class="btn-g">Watch It Work</a>
