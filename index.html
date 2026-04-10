@@ -1044,6 +1044,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
           <div class="sm-reel"><div class="sm-reel-track" id="reel0"><div class="sm-digit">?</div></div></div>
           <div class="sm-reel"><div class="sm-reel-track" id="reel1"><div class="sm-digit">?</div></div></div>
           <div class="sm-reel"><div class="sm-reel-track" id="reel2"><div class="sm-digit">?</div></div></div>
+          <div class="sm-reel"><div class="sm-reel-track" id="reel3"><div class="sm-digit">?</div></div></div>
         </div>
         <div class="sm-label" id="smResult">YOUR POSITION IN QUEUE</div>
         <button class="sm-btn" id="smBtn">SPIN TO REVEAL POSITION →</button>
@@ -1396,104 +1397,116 @@ for(let i=0;i<5;i++)setTimeout(addFeed,i*200);
 setInterval(addFeed,3200);
 
 /* SLOT MACHINE */
-/* ── CRED-STYLE SLOT MACHINE ── */
+/* ── SLOT MACHINE ── */
 (function(){
-  const DIGIT_H = 46;
-  const DIGITS = ['0','1','2','3','4','5','6','7','8','9'];
-  let spinsLeft = 3;
-  let baseCount = (typeof cnt !== "undefined") ? cnt : 1248;
-  const MAX_QUEUE = 10000;
+  var DH = 46; // digit height px — must match .sm-digit height in CSS
+  var TOTAL = 20; // items per reel
+  var spinsLeft = 3;
+  var baseCount = (typeof cnt !== 'undefined') ? cnt : 1300;
 
+  // Build each reel with TOTAL random digits
   function buildReel(id){
-    const track = document.getElementById(id);
+    var track = document.getElementById(id);
     if(!track) return;
-    // Build 30 digits for scroll effect
-    let html = '';
-    for(let i=0;i<30;i++){
-      html += '<div class="sm-digit">'+DIGITS[Math.floor(Math.random()*10)]+'</div>';
+    var s = '';
+    for(var i=0;i<TOTAL;i++){
+      s += '<div class="sm-digit">'+ Math.floor(Math.random()*10) +'</div>';
     }
-    track.innerHTML = html;
-    track.style.transform = 'translateY(0)';
+    track.innerHTML = s;
+    // Reset to top instantly
+    track.style.transition = 'none';
+    track.style.transform = 'translateY(0px)';
   }
+  ['reel0','reel1','reel2','reel3'].forEach(buildReel);
 
-  ['reel0','reel1','reel2'].forEach(buildReel);
-
+  // Spin one reel and land on finalDigit
   function spinReel(id, finalDigit, delay){
-    return new Promise(resolve=>{
-      const track = document.getElementById(id);
-      if(!track){resolve();return;}
-      const items = track.querySelectorAll('.sm-digit');
-      // Set final digit on last item
-      items[items.length-1].textContent = finalDigit;
-      // Fast scroll up, then snap to final
-      const totalH = (items.length - 2) * DIGIT_H;
+    return new Promise(function(resolve){
+      var track = document.getElementById(id);
+      if(!track){ resolve(); return; }
+
+      // Place finalDigit at index TOTAL-3 (3rd from bottom = lands in center)
+      var items = track.querySelectorAll('.sm-digit');
+      var landIndex = TOTAL - 3;
+      items[landIndex].textContent = finalDigit;
+
+      // Reset to top
       track.style.transition = 'none';
-      track.style.transform = 'translateY(0)';
-      // Animate
-      setTimeout(()=>{
-        track.classList.remove('landing');
-        track.style.transition = `transform ${0.08 + delay*0.01}s linear`;
-        // Rapid tick
-        let ticks = 0;
-        const tickInterval = setInterval(()=>{
+      track.style.transform = 'translateY(0px)';
+
+      setTimeout(function(){
+        // Fast random spin phase
+        var ticks = 0;
+        var maxTicks = 14 + delay * 3;
+        var interval = setInterval(function(){
           ticks++;
+          var rndIdx = Math.floor(Math.random() * (TOTAL - 6)) + 2;
           track.style.transition = 'none';
-          const randomOffset = -Math.floor(Math.random()*(items.length-4))*DIGIT_H;
-          track.style.transform = `translateY(${randomOffset}px)`;
-          if(ticks > 12 + delay*2){
-            clearInterval(tickInterval);
-            // Land on final — second to last position (visible in center)
-            track.classList.add('landing');
-            track.style.transition = `transform ${0.5 + delay*0.15}s cubic-bezier(.22,1,.36,1)`;
-            const landPos = -(items.length - 2) * DIGIT_H + DIGIT_H;
-            track.style.transform = `translateY(${landPos}px)`;
-            setTimeout(resolve, 600 + delay*150);
+          track.style.transform = 'translateY(-' + (rndIdx * DH) + 'px)';
+
+          if(ticks >= maxTicks){
+            clearInterval(interval);
+            // Smooth land on landIndex — center of 3-row visible window
+            // visible center = landIndex - 1 (because top row is index-1, center is index)
+            var landPos = (landIndex - 1) * DH;
+            track.style.transition = 'transform ' + (0.55 + delay * 0.12) + 's cubic-bezier(0.22,1,0.36,1)';
+            track.style.transform = 'translateY(-' + landPos + 'px)';
+            setTimeout(resolve, (0.55 + delay * 0.12) * 1000 + 80);
           }
-        }, 60);
-      }, delay * 120);
+        }, 55);
+      }, delay * 130);
     });
   }
 
-  const smBtn = document.getElementById('smBtn');
-  smBtn?.addEventListener('click', async ()=>{
-    if(smBtn.disabled || spinsLeft <= 0) return;
-    spinsLeft--;
-    document.getElementById('spinsLeft').textContent = spinsLeft;
-    smBtn.disabled = true;
-    smBtn.textContent = 'SPINNING...';
-    const result = document.getElementById('smResult');
-    if(result){ result.textContent = ''; result.classList.remove('revealed'); }
+  var smBtn = document.getElementById('smBtn');
+  if(smBtn){
+    smBtn.addEventListener('click', function(){
+      if(smBtn.disabled || spinsLeft <= 0) return;
+      spinsLeft--;
+      var spinsEl = document.getElementById('spinsLeft');
+      if(spinsEl) spinsEl.textContent = spinsLeft;
+      smBtn.disabled = true;
+      smBtn.textContent = 'SPINNING...';
 
-    const final = Math.min(MAX_QUEUE, baseCount + Math.floor(Math.random()*150 + 50));
-    baseCount = final;
-    // Pick 3 digits from final number (last 3)
-    const numStr = String(final).padStart(3,'0');
-    const d0 = numStr[numStr.length-3] || '1';
-    const d1 = numStr[numStr.length-2] || '2';
-    const d2 = numStr[numStr.length-1] || '5';
+      var result = document.getElementById('smResult');
+      if(result){ result.textContent = 'YOUR POSITION IN QUEUE'; result.classList.remove('revealed'); }
 
-    await Promise.all([
-      spinReel('reel0', d0, 0),
-      spinReel('reel1', d1, 1),
-      spinReel('reel2', d2, 2),
-    ]);
+      // Generate final 4-digit number (max 9999)
+      var final = Math.min(9999, baseCount + Math.floor(Math.random() * 200 + 80));
+      baseCount = final;
 
-    if(result){
-      const tier = final<=1500?'🔥 TRAILBLAZER — Lock this in now!':final<=4000?'⚡ INSIDER TIER — Great spot!':final<=7000?'✓ PIONEER — Early access secured':'🏁 MEMBER — You made it!';
-      result.textContent = '#'+final.toLocaleString('en-IN')+' · '+tier;
-      result.classList.add('revealed');
-    }
-    // Sync with global counter
-    if(typeof cnt !== 'undefined' && typeof update10KBar === 'function'){
-      cnt = Math.max(cnt, final);
-      update10KBar(cnt);
-      const hc=document.getElementById('heroCount');if(hc)hc.textContent=cnt.toLocaleString('en-IN');
-      const ln=document.getElementById('liveNum');if(ln)ln.textContent=cnt.toLocaleString('en-IN');
-    }
-    smBtn.textContent = spinsLeft > 0 ? 'SPIN AGAIN →' : 'SECURE THIS POSITION →';
-    smBtn.disabled = false;
-    smBtn.onclick = spinsLeft <= 0 ? ()=>document.getElementById('waitlist')?.scrollIntoView({behavior:'smooth'}) : null;
-  });
+      // Pad to 4 digits
+      var numStr = String(final).padStart(4,'0');
+      var d0 = numStr[0], d1 = numStr[1], d2 = numStr[2], d3 = numStr[3];
+
+      Promise.all([
+        spinReel('reel0', d0, 0),
+        spinReel('reel1', d1, 1),
+        spinReel('reel2', d2, 2),
+        spinReel('reel3', d3, 3)
+      ]).then(function(){
+        if(result){
+          var tier = final<=1500 ? '🔥 TRAILBLAZER' : final<=4000 ? '⚡ INSIDER' : final<=7000 ? '✓ PIONEER' : '🏁 MEMBER';
+          result.textContent = '#' + final.toLocaleString('en-IN') + ' · ' + tier;
+          result.classList.add('revealed');
+        }
+        // Sync global counter
+        if(typeof cnt !== 'undefined'){
+          cnt = Math.max(cnt, final);
+          if(typeof update10KBar === 'function') update10KBar(cnt);
+          var hc = document.getElementById('heroCount'); if(hc) hc.textContent = cnt.toLocaleString('en-IN');
+          var ln = document.getElementById('liveNum'); if(ln) ln.textContent = cnt.toLocaleString('en-IN');
+        }
+        smBtn.disabled = false;
+        if(spinsLeft > 0){
+          smBtn.textContent = 'SPIN AGAIN →';
+        } else {
+          smBtn.textContent = 'SECURE THIS POSITION →';
+          smBtn.onclick = function(){ document.getElementById('waitlist')?.scrollIntoView({behavior:'smooth'}); };
+        }
+      });
+    });
+  }
 })();
 
 /* CAPACITY BAR — removed, using 10K bar */
