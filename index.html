@@ -772,9 +772,9 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
             for(var i=1;i<slides.length;i++) slides[i].style.opacity='0';
           }
           fixH();
-          iv=setInterval(function(){mfGo((cur+1)%total);},2800);
+          iv=setInterval(function(){mfGo((cur+1)%total);},1800);
           c.addEventListener('mouseenter',function(){clearInterval(iv);});
-          c.addEventListener('mouseleave',function(){iv=setInterval(function(){mfGo((cur+1)%total);},2800);});
+          c.addEventListener('mouseleave',function(){iv=setInterval(function(){mfGo((cur+1)%total);},1800);});
         })();
         </script>
       </div>
@@ -823,6 +823,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         })();
         </script>
         <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
+        
         <div class="stat-row">
           <div class="stat-i"><div class="stat-n">97%</div><div class="stat-l">Fit Score</div></div>
           <div class="stat-i"><div class="stat-n">0</div><div class="stat-l">Returns</div></div>
