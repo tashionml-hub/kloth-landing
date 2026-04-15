@@ -736,7 +736,95 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         <p class="magic-sub reveal d2">Kloth builds your AI fashion twin — it tries every outfit on your exact body before you spend a rupee.</p>
       </div>
       <div class="magic-demo reveal d2">
-        <video autoplay loop muted playsinline style="width:100%;max-width:480px;border-radius:16px;box-shadow:0 24px 64px rgba(45,14,40,.15)" src="https://res.cloudinary.com/dtdeahdh6/video/upload/v1776253373/1776252001188474_thb8kz.mp4"></video>
+        <div class="demo-lbl">INTERACTIVE FIT PREVIEW</div>
+        <div class="demo-stage" style="width:100%;max-width:480px;height:560px">
+          <div class="demo-glow-r"></div>
+          <img id="demoBig" src="https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png" alt="Size L" style="width:100%;height:100%;object-fit:contain" class="demo-fig l"/>        </div>
+        <div class="sz-btns" id="szBtns">
+          <button class="sz-btn" id="szS">S</button>
+          <button class="sz-btn" id="szM">M</button>
+          <button class="sz-btn on" id="szL">L</button>
+          <button class="sz-btn" id="szXL">XL</button>
+        </div>
+        <script>
+        (function(){
+          var srcs={
+            s:'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594681/VTON_S-removebg-preview_ihi5ne.png',
+            m:'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594642/VTON_M-removebg-preview_zquq24.png',
+            l:'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png',
+            xl:'https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594702/VTON_XL-removebg-preview_ruvdq6.png'
+          };
+          var labels={
+            s:'Size S — fits chest 88–92cm · Slim fit',
+            m:'Size M — fits chest 93–97cm · Regular fit',
+            l:'Size L — fits chest 98–102cm · Relaxed fit',
+            xl:'Size XL — fits chest 104–108cm · Oversized'
+          };
+          function doSwitch(s){
+            var db=document.getElementById('demoBig');
+            if(db){db.src=srcs[s];}
+            var si=document.getElementById('szInfo');
+            if(si){si.textContent=labels[s];}
+            ['s','m','l','xl'].forEach(function(k){
+              var btn=document.getElementById('sz'+k.toUpperCase());
+              if(btn) btn.classList.toggle('on', k===s);
+            });
+          }
+          ['s','m','l','xl'].forEach(function(s){
+            var btn=document.getElementById('sz'+s.toUpperCase());
+            if(!btn) return;
+            function handler(e){e.preventDefault();e.stopPropagation();doSwitch(s);}
+            btn.addEventListener('click', handler);
+            btn.addEventListener('touchend', handler);
+          });
+        })();
+        </script>
+        <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
+        <div class="mfeat" id="mfCard" style="margin-top:12px;margin-bottom:4px">
+          <div class="mfeat-ico" id="mfIco">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C10 2 4 5 4 10C4 15 10 18 10 18C10 18 16 15 16 10C16 5 10 2 10 2Z" stroke="#9792E3" stroke-width="1" fill="none"/><circle cx="10" cy="10" r="3" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>
+          </div>
+          <div>
+            <div class="mfeat-h" id="mfH">AI Reads Your Body Shape</div>
+            <div class="mfeat-p" id="mfP">One scan. Precise 3D measurements. Remembered forever across all brands.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:16px">
+          <div id="mfd0" style="width:20px;height:3px;border-radius:2px;background:var(--lav)"></div>
+          <div id="mfd1" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3"></div>
+          <div id="mfd2" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3"></div>
+        </div>
+        <script>
+        (function(){
+          var data=[
+            {h:'AI Reads Your Body Shape',p:'One scan. Precise 3D measurements. Remembered forever across all brands.',ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C10 2 4 5 4 10C4 15 10 18 10 18C10 18 16 15 16 10C16 5 10 2 10 2Z" stroke="#9792E3" stroke-width="1" fill="none"/><circle cx="10" cy="10" r="3" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>'},
+            {h:'Outfits Adapt to You',p:"See S, M, L, XL on YOUR body. Not a model's. Not a guess.",ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="10" rx="1" stroke="#9792E3" stroke-width="1"/><path d="M7 6V4a3 3 0 016 0v2" stroke="#9792E3" stroke-width="1" stroke-linecap="round"/><circle cx="10" cy="11" r="2" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>'},
+            {h:'Zero Guesswork. Zero Returns.',p:'Buy with certainty. Your wardrobe — curated, fitted, confirmed.',ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#9792E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="10" r="8" stroke="rgba(151,146,227,.4)" stroke-width="1"/></svg>'}
+          ];
+          var cur=0;
+          var card=document.getElementById('mfCard');
+          var h=document.getElementById('mfH');
+          var p=document.getElementById('mfP');
+          var ico=document.getElementById('mfIco');
+          function go(n){
+            card.style.opacity='0';
+            setTimeout(function(){
+              cur=n%3;
+              h.textContent=data[cur].h;
+              p.textContent=data[cur].p;
+              ico.innerHTML=data[cur].ico;
+              ['mfd0','mfd1','mfd2'].forEach(function(id,i){
+                var d=document.getElementById(id);
+                d.style.width=i===cur?'20px':'6px';
+                d.style.opacity=i===cur?'1':'.3';
+              });
+              card.style.opacity='1';
+            },300);
+          }
+          card.style.transition='opacity .3s';
+          setInterval(function(){go(cur+1);},1800);
+        })();
+        </script>
       </div>
     </div>
   </div>
