@@ -248,7 +248,7 @@ section{position:relative}
 .dsz.on{border-color:var(--coral);color:var(--coral);background:rgba(238,99,82,.1)}
 
 /* MAGIC */
-#magic{background:#EDE8E6}#magic .si{padding-top:48px;padding-bottom:40px}
+#magic{background:#f5f3f2}#magic .si{padding-top:36px;padding-bottom:24px}
 #magic::before,#magic::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
 #magic::before{top:0}#magic::after{bottom:0}
 .magic-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
@@ -261,18 +261,18 @@ section{position:relative}
 .mfeat:hover .mfeat-ico{background:rgba(151,146,227,.18)}
 .mfeat-h{font-family:var(--fd);font-weight:600;font-size:13px;letter-spacing:-.02em;margin-bottom:3px}
 .mfeat-p{font-family:var(--fm);font-size:10px;color:var(--txM);letter-spacing:.04em;line-height:1.7}
-.magic-demo{display:flex;flex-direction:column;align-items:center;gap:10px}
+.magic-demo{display:flex;flex-direction:column;align-items:center;gap:8px}
 .demo-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.3em;color:var(--txD);text-transform:uppercase}
 .demo-stage{position:relative;width:240px;height:320px;display:flex;align-items:center;justify-content:center}
-.demo-glow-r{position:absolute;inset:-40px;background:radial-gradient(ellipse at 50% 50%,rgba(151,146,227,.12) 0%,transparent 70%);animation:breathe 5s ease-in-out infinite;pointer-events:none}
+.demo-glow-r{display:none}
 .demo-fig{position:relative;z-index:1;transition:transform .7s var(--eo)}
 .demo-fig.s{transform:scale(.82)}.demo-fig.m{transform:scale(.93)}.demo-fig.l{transform:scale(1)}.demo-fig.xl{transform:scale(1.1)}
-.sz-btns{display:flex;gap:8px}
+.sz-btns{display:flex;gap:8px;margin-top:8px}
 .sz-btn{font-family:var(--fm);font-size:11px;letter-spacing:.2em;width:42px;height:42px;border:1px solid var(--bdr);background:var(--sur);color:var(--txM);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all .3s var(--eo);display:flex;align-items:center;justify-content:center;user-select:none}
 .sz-btn:hover{border-color:var(--bdrH);color:var(--tx)}
 .sz-btn.on{border-color:var(--coral);background:rgba(238,99,82,.12);color:var(--coral)}
 .sz-info{text-align:center;font-family:var(--fm);font-size:11px;color:var(--txM);letter-spacing:.07em;min-height:18px;transition:opacity .3s}
-.stat-row{display:flex;gap:14px;margin-top:14px}
+.stat-row{display:none}
 .stat-i{flex:1;border:1px solid var(--bdr);padding:10px 12px;background:var(--sur);text-align:center;cursor:none;transition:border-color .3s,background .3s,transform .4s var(--eo);transform-style:preserve-3d}
 .stat-i:hover{border-color:var(--coral);background:rgba(238,99,82,.05);transform:translateY(-6px) rotateX(8deg)}
 .stat-n{font-family:var(--fd);font-weight:800;font-size:26px;color:var(--coral);letter-spacing:-.03em}
@@ -497,11 +497,11 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
 @media(max-width:900px){
   .magic-demo { order: 2; }
   .magic-inner > div:first-child { order: 1; }
-  .demo-stage { width: 100% !important; max-width: 320px; height: 300px !important; }
-  .demo-stage img#demoBig { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+  .demo-stage { width: 100% !important; max-width: 100% !important; height: 520px !important; }
+  .demo-stage img#demoBig { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; }
   .sz-btns { justify-content: center; }
   .sz-info { text-align: center; }
-  .stat-row { justify-content: center; }
+
 }
 
 
@@ -737,7 +737,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
       </div>
       <div class="magic-demo reveal d2">
         <div class="demo-lbl">INTERACTIVE FIT PREVIEW</div>
-        <div class="demo-stage" style="width:280px;height:420px">
+        <div class="demo-stage" style="width:100%;max-width:480px;height:560px">
           <div class="demo-glow-r"></div>
           <img id="demoBig" src="https://res.cloudinary.com/dtdeahdh6/image/upload/v1775594583/VTON_L-removebg-preview_wrtzgf.png" alt="Size L" style="width:100%;height:100%;object-fit:contain" class="demo-fig l"/>        </div>
         <div class="sz-btns" id="szBtns">
@@ -825,12 +825,6 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
           setInterval(function(){go(cur+1);},1800);
         })();
         </script>
-        
-        <div class="stat-row">
-          <div class="stat-i"><div class="stat-n">97%</div><div class="stat-l">Fit Score</div></div>
-          <div class="stat-i"><div class="stat-n">0</div><div class="stat-l">Returns</div></div>
-          <div class="stat-i"><div class="stat-n">10s</div><div class="stat-l">Scan</div></div>
-        </div>
       </div>
     </div>
   </div>
