@@ -734,49 +734,6 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         <div class="slbl km-shutter">02 — HOW IT WORKS</div>
         <h2 class="magic-title reveal d1">THIS IS WHAT<span class="acc">you were missing.</span></h2>
         <p class="magic-sub reveal d2">Kloth builds your AI fashion twin — it tries every outfit on your exact body before you spend a rupee.</p>
-        <div id="mfeatCarousel" style="position:relative;min-height:90px;margin-bottom:4px">
-          <div class="mfeat mfeat-slide" id="mf0" style="position:absolute;inset:0;opacity:1;transition:opacity .5s ease;margin-bottom:0"><div class="mfeat-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C10 2 4 5 4 10C4 15 10 18 10 18C10 18 16 15 16 10C16 5 10 2 10 2Z" stroke="#9792E3" stroke-width="1" fill="none"/><circle cx="10" cy="10" r="3" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg></div><div><div class="mfeat-h">AI Reads Your Body Shape</div><div class="mfeat-p">One scan. Precise 3D measurements. Remembered forever across all brands.</div></div></div>
-          <div class="mfeat mfeat-slide" id="mf1" style="position:absolute;inset:0;opacity:0;transition:opacity .5s ease;margin-bottom:0"><div class="mfeat-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="10" rx="1" stroke="#9792E3" stroke-width="1"/><path d="M7 6V4a3 3 0 016 0v2" stroke="#9792E3" stroke-width="1" stroke-linecap="round"/><circle cx="10" cy="11" r="2" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg></div><div><div class="mfeat-h">Outfits Adapt to You</div><div class="mfeat-p">See S, M, L, XL on YOUR body. Not a model's. Not a guess.</div></div></div>
-          <div class="mfeat mfeat-slide" id="mf2" style="position:absolute;inset:0;opacity:0;transition:opacity .5s ease;margin-bottom:0"><div class="mfeat-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#9792E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="10" r="8" stroke="rgba(151,146,227,.4)" stroke-width="1"/></svg></div><div><div class="mfeat-h">Zero Guesswork. Zero Returns.</div><div class="mfeat-p">Buy with certainty. Your wardrobe — curated, fitted, confirmed.</div></div></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:16px" id="mfDots">
-          <div onclick="mfGo(0)" style="width:20px;height:3px;border-radius:2px;background:var(--lav);cursor:pointer;transition:opacity .3s" id="mfd0"></div>
-          <div onclick="mfGo(1)" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3;cursor:pointer;transition:all .3s" id="mfd1"></div>
-          <div onclick="mfGo(2)" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3;cursor:pointer;transition:all .3s" id="mfd2"></div>
-        </div>
-        <script>
-        (function(){
-          var cur=0, total=3, iv;
-          function mfGo(n){
-            document.getElementById('mf'+cur).style.opacity='0';
-            document.getElementById('mfd'+cur).style.width='6px';
-            document.getElementById('mfd'+cur).style.opacity='.3';
-            cur=n;
-            document.getElementById('mf'+cur).style.opacity='1';
-            document.getElementById('mfd'+cur).style.width='20px';
-            document.getElementById('mfd'+cur).style.opacity='1';
-          }
-          window.mfGo=mfGo;
-          // Also set carousel height dynamically
-          var c=document.getElementById('mfeatCarousel');
-          function fixH(){
-            var slides=c.querySelectorAll('.mfeat-slide');
-            var maxH=0;
-            slides.forEach(function(s){
-              s.style.position='static';s.style.opacity='1';
-              maxH=Math.max(maxH,s.offsetHeight);
-              s.style.position='absolute';
-            });
-            c.style.minHeight=maxH+'px';
-            slides[0].style.opacity='1';
-            for(var i=1;i<slides.length;i++) slides[i].style.opacity='0';
-          }
-          fixH();
-          iv=setInterval(function(){mfGo((cur+1)%total);},1800);
-          c.addEventListener('mouseenter',function(){clearInterval(iv);});
-          c.addEventListener('mouseleave',function(){iv=setInterval(function(){mfGo((cur+1)%total);},1800);});
-        })();
-        </script>
       </div>
       <div class="magic-demo reveal d2">
         <div class="demo-lbl">INTERACTIVE FIT PREVIEW</div>
@@ -823,6 +780,51 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
         })();
         </script>
         <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
+        <div class="mfeat" id="mfCard" style="margin-top:12px;margin-bottom:4px">
+          <div class="mfeat-ico" id="mfIco">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C10 2 4 5 4 10C4 15 10 18 10 18C10 18 16 15 16 10C16 5 10 2 10 2Z" stroke="#9792E3" stroke-width="1" fill="none"/><circle cx="10" cy="10" r="3" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>
+          </div>
+          <div>
+            <div class="mfeat-h" id="mfH">AI Reads Your Body Shape</div>
+            <div class="mfeat-p" id="mfP">One scan. Precise 3D measurements. Remembered forever across all brands.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:16px">
+          <div id="mfd0" style="width:20px;height:3px;border-radius:2px;background:var(--lav)"></div>
+          <div id="mfd1" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3"></div>
+          <div id="mfd2" style="width:6px;height:3px;border-radius:2px;background:var(--lav);opacity:.3"></div>
+        </div>
+        <script>
+        (function(){
+          var data=[
+            {h:'AI Reads Your Body Shape',p:'One scan. Precise 3D measurements. Remembered forever across all brands.',ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C10 2 4 5 4 10C4 15 10 18 10 18C10 18 16 15 16 10C16 5 10 2 10 2Z" stroke="#9792E3" stroke-width="1" fill="none"/><circle cx="10" cy="10" r="3" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>'},
+            {h:'Outfits Adapt to You',p:"See S, M, L, XL on YOUR body. Not a model's. Not a guess.",ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="10" rx="1" stroke="#9792E3" stroke-width="1"/><path d="M7 6V4a3 3 0 016 0v2" stroke="#9792E3" stroke-width="1" stroke-linecap="round"/><circle cx="10" cy="11" r="2" fill="rgba(151,146,227,.2)" stroke="#9792E3" stroke-width="1"/></svg>'},
+            {h:'Zero Guesswork. Zero Returns.',p:'Buy with certainty. Your wardrobe — curated, fitted, confirmed.',ico:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-8" stroke="#9792E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="10" r="8" stroke="rgba(151,146,227,.4)" stroke-width="1"/></svg>'}
+          ];
+          var cur=0;
+          var card=document.getElementById('mfCard');
+          var h=document.getElementById('mfH');
+          var p=document.getElementById('mfP');
+          var ico=document.getElementById('mfIco');
+          function go(n){
+            card.style.opacity='0';
+            setTimeout(function(){
+              cur=n%3;
+              h.textContent=data[cur].h;
+              p.textContent=data[cur].p;
+              ico.innerHTML=data[cur].ico;
+              ['mfd0','mfd1','mfd2'].forEach(function(id,i){
+                var d=document.getElementById(id);
+                d.style.width=i===cur?'20px':'6px';
+                d.style.opacity=i===cur?'1':'.3';
+              });
+              card.style.opacity='1';
+            },300);
+          }
+          card.style.transition='opacity .3s';
+          setInterval(function(){go(cur+1);},1800);
+        })();
+        </script>
         
         <div class="stat-row">
           <div class="stat-i"><div class="stat-n">97%</div><div class="stat-l">Fit Score</div></div>
