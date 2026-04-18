@@ -264,6 +264,7 @@ section{position:relative}
 .magic-demo{display:flex;flex-direction:column;align-items:center;gap:8px}
 .demo-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.3em;color:var(--txD);text-transform:uppercase}
 .demo-stage{position:relative;width:240px;height:320px;display:flex;align-items:center;justify-content:center}
+.sz-btns.sz-side{position:absolute;right:8px;top:50%;transform:translateY(-50%);flex-direction:column;gap:10px;margin:0;z-index:6}
 .demo-glow-r{display:none}
 .demo-fig{position:relative;z-index:1;transition:transform .7s var(--eo)}
 .demo-fig.s{transform:scale(.82)}.demo-fig.m{transform:scale(.93)}.demo-fig.l{transform:scale(1)}.demo-fig.xl{transform:scale(1.1)}
@@ -794,6 +795,23 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
             btn.addEventListener('click', handler);
             btn.addEventListener('touchend', handler);
           });
+          var szBtns=document.getElementById('szBtns');
+          var stage=document.querySelector('.magic-demo .demo-stage');
+          if(szBtns&&stage){stage.appendChild(szBtns);szBtns.classList.add('sz-side');}
+          var keys=['s','m','l','xl'];
+          var lastIdx=-1;
+          function onScroll(){
+            if(!stage)return;
+            var r=stage.getBoundingClientRect();
+            var vh=window.innerHeight||document.documentElement.clientHeight;
+            var total=r.height+vh;
+            var seen=vh-r.top;
+            var p=Math.max(0,Math.min(.9999,seen/total));
+            var idx=Math.min(3,Math.floor(p*4));
+            if(idx!==lastIdx){lastIdx=idx;doSwitch(keys[idx]);}
+          }
+          window.addEventListener('scroll',onScroll,{passive:true});
+          onScroll();
         })();
         </script>
         <div class="sz-info" id="szInfo">Size L — fits chest 98–102cm · Relaxed fit</div>
