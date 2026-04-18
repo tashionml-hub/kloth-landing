@@ -690,7 +690,7 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
     <a class="n-link" href="#problem">Problem</a>
     <a class="n-link" href="#demo">Demo</a>
     <a class="n-link" href="#game">Unlock</a>
-    <a class="n-cta" href="https://www.instagram.com/kloth_me/" target="_blank" rel="noopener">Follow on IG →</a>
+    <a class="n-cta" id="navCta" href="https://www.instagram.com/kloth_me/" target="_blank" rel="noopener">Follow on IG →</a>
   </div>
 </nav>
 
@@ -1240,7 +1240,26 @@ function cycleHero(){vi=(vi+1)%verbs.length;delW(heroVerb,()=>{typeW(verbs[vi],h
 typeW(verbs[0],heroVerb,cycleHero);
 
 /* NAV */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60));
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  document.getElementById('nav').classList.toggle('scrolled',y>60);
+  const cta=document.getElementById('navCta');
+  if(!cta)return;
+  const past=y>Math.max(window.innerHeight*0.6,400);
+  if(past&&cta.dataset.mode!=='waitlist'){
+    cta.textContent='Join the Waitlist';
+    cta.href='#waitlist';
+    cta.removeAttribute('target');
+    cta.removeAttribute('rel');
+    cta.dataset.mode='waitlist';
+  }else if(!past&&cta.dataset.mode!=='ig'){
+    cta.textContent='Follow on IG →';
+    cta.href='https://www.instagram.com/kloth_me/';
+    cta.target='_blank';
+    cta.rel='noopener';
+    cta.dataset.mode='ig';
+  }
+});
 
 /* REVEAL */
 const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08});
