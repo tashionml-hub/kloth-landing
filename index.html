@@ -1304,7 +1304,7 @@ let curStep=0,aiIv,demoAuto;
 function setStep(s){
   document.querySelectorAll('.ds').forEach(d=>d.classList.remove('active'));
   document.getElementById('ds'+s)?.classList.add('active');
-  document.querySelectorAll('.dstep-btn').forEach((b,i)=>{b.classList.remove('active','done');if(i<s)b.classList.add('done');if(i===s){b.classList.add('active');if(window.innerWidth<=900)b.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})}});
+  document.querySelectorAll('.dstep-btn').forEach((b,i)=>{b.classList.remove('active','done');if(i<s)b.classList.add('done');if(i===s){b.classList.add('active');if(window.innerWidth<=900){const c=b.parentElement;if(c)c.scrollTo({left:b.offsetLeft-(c.clientWidth-b.clientWidth)/2,behavior:'smooth'})}}});
   const pf=document.getElementById('demoPF'),sl=document.getElementById('demoSL'),pp=document.getElementById('demoPP');
   const pcts=[20,40,60,80,100];
   const dotPcts=[20,40,60,80,100];
