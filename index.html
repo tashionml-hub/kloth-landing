@@ -377,6 +377,11 @@ section{position:relative}
 .sm-spins span{color:rgba(245,239,237,.6)}
 
 /* WAITLIST */
+.music-btn{position:fixed;bottom:20px;right:20px;width:46px;height:46px;border-radius:50%;background:#EE6352;color:#F5EFED;border:none;display:flex;align-items:center;justify-content:center;z-index:120;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.22);transition:transform .2s var(--eo),background .3s}
+.music-btn:hover{transform:scale(1.06)}
+.music-btn.on{background:#9792E3}
+.music-btn svg{width:20px;height:20px;display:block}
+@media(max-width:600px){.music-btn{bottom:14px;right:14px;width:42px;height:42px}.music-btn svg{width:18px;height:18px}}
 #waitlist{background:var(--bg2);position:relative;overflow:hidden}
 #waitlist::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%,rgba(238,99,82,.07) 0%,transparent 70%);pointer-events:none}
 .wl-inner{max-width:760px;margin:0 auto;padding:120px clamp(24px,5vw,80px);text-align:center;position:relative;z-index:2}
@@ -942,22 +947,6 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
       </div>
 </section>
 
-<!-- MAGIC -->
-<section id="future">
-  <div class="fut-grid"></div>
-  <div class="si fut-inner">
-    <div class="fut-head">
-      <div class="fut-slbl reveal">04 — THE VISION</div>
-      <div class="fut-title reveal d1"><em>Meet your</em><strong>AI Stylist</strong></div>
-      <p class="fut-sub reveal d2">More than a try-on. A fashion intelligence that evolves with you.</p>
-    </div>
-    <div class="fut-cards">
-      <div class="fc km-fc"><div class="fc-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2C11 2 5 5.5 5 11C5 16.5 11 20 11 20C11 20 17 16.5 17 11C17 5.5 11 2 11 2Z" stroke="#F5EFED" stroke-width="1" fill="none"/><circle cx="11" cy="11" r="3.5" fill="rgba(245,239,237,.1)" stroke="#F5EFED" stroke-width="1"/></svg></div><div class="fc-h">Style DNA</div><p class="fc-p">Kloth learns your silhouettes, palette, and lifestyle to curate looks that feel exactly like you.</p><div class="fc-stat">∞ <span>style memory</span></div></div>
-      <div class="fc km-fc"><div class="fc-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="16" height="11" rx="1" stroke="#F5EFED" stroke-width="1"/><path d="M7 7V5a4 4 0 018 0v2" stroke="#F5EFED" stroke-width="1" stroke-linecap="round"/><circle cx="11" cy="12.5" r="2.5" fill="rgba(245,239,237,.1)" stroke="#F5EFED" stroke-width="1"/></svg></div><div class="fc-h">Fit Intelligence</div><p class="fc-p">Your AI twin holds your exact measurements across every brand, every cut, every fabric.</p><div class="fc-stat">97% <span>fit accuracy</span></div></div>
-      <div class="fc km-fc"><div class="fc-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#F5EFED" stroke-width="1"/><path d="M7.5 11l2.5 2.5 4.5-5" stroke="#F5EFED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="fc-h">Pre-Purchase Clarity</div><p class="fc-p">See it before you buy it. On your body. In your size. The future of fashion is visual certainty.</p><div class="fc-stat">−80% <span>return rate</span></div></div>
-    </div>
-  </div>
-</section>
 
 <!-- GAMIFICATION -->
 <section id="game">
@@ -2258,6 +2247,30 @@ const wl=document.getElementById('waitlist');if(wl)tierCapObs.observe(wl);
   }
 
   draw();
+})();
+</script>
+
+<audio id="bgm" src="https://res.cloudinary.com/dtdeahdh6/video/upload/v1776508752/panda-beats-unmastered-quotroses-hard-hitting-trap-x-lofi-type-beat-494877_fnmycs.mp3" loop preload="auto"></audio>
+<button class="music-btn" id="musicToggle" aria-label="Toggle background music" type="button"></button>
+<script>
+(function(){
+  var audio=document.getElementById('bgm');
+  var btn=document.getElementById('musicToggle');
+  if(!audio||!btn)return;
+  audio.volume=0.1;
+  var offIcon='<svg viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/><path d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  var onIcon='<svg viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/><path d="M16 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  btn.innerHTML=offIcon;
+  var playing=false;
+  function render(){btn.innerHTML=playing?onIcon:offIcon;btn.classList.toggle('on',playing);}
+  function play(){var p=audio.play();if(p&&p.then){p.then(function(){playing=true;render();}).catch(function(){});}else{playing=true;render();}}
+  function pause(){audio.pause();playing=false;render();}
+  btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(playing)pause();else play();});
+  function tryAuto(){if(!playing)play();document.removeEventListener('click',tryAuto,true);document.removeEventListener('touchstart',tryAuto,true);document.removeEventListener('keydown',tryAuto,true);document.removeEventListener('scroll',tryAuto,true);}
+  document.addEventListener('click',tryAuto,true);
+  document.addEventListener('touchstart',tryAuto,true);
+  document.addEventListener('keydown',tryAuto,true);
+  document.addEventListener('scroll',tryAuto,{capture:true,passive:true});
 })();
 </script>
 </body></html>
