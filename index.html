@@ -507,16 +507,21 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
 
 @media(max-width:900px){
   #demo .si{padding:60px 16px 48px}
-  .demo-inner{gap:24px !important;grid-template-columns:1fr !important}
-  .demo-inner > div:first-child{order:2;min-width:0}
-  .demo-inner > div:nth-child(2){order:1;min-width:0;width:100%;display:flex;justify-content:center}
+  .demo-inner{display:flex !important;flex-direction:column;gap:20px}
+  .demo-inner > div:first-child{display:contents}
+  .demo-inner > div:first-child > *{width:100%}
+  .demo-inner > div:first-child > .slbl{order:1}
+  .demo-inner > div:first-child > .demo-title{order:2}
+  .demo-inner > div:first-child > .demo-sub{order:3}
+  .demo-inner > div:nth-child(2){order:4;width:100%;display:flex;justify-content:center;margin:6px 0}
   .demo-inner > div:nth-child(2) > div{width:min(290px,78vw);height:auto;aspect-ratio:300/608;padding:3.5% !important}
   .demo-inner > div:nth-child(2) > div > div:last-child{border-radius:26px !important}
+  .demo-inner > div:first-child > #demoSteps{order:5}
+  .demo-inner > div:first-child > :last-child{order:6}
   .demo-title{font-size:clamp(30px,8vw,42px) !important;margin-bottom:14px !important}
-  .demo-sub{margin-bottom:22px !important}
-  #demoSteps{display:flex !important;flex-direction:row;overflow-x:auto;overflow-y:hidden;gap:10px;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:4px 2px 12px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--coral) transparent}
-  #demoSteps::-webkit-scrollbar{height:3px}
-  #demoSteps::-webkit-scrollbar-thumb{background:var(--coral)}
+  .demo-sub{margin-bottom:6px !important}
+  #demoSteps{display:flex !important;flex-direction:row;overflow-x:auto;overflow-y:hidden;gap:10px;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:4px 2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+  #demoSteps::-webkit-scrollbar{display:none;width:0;height:0}
   #demoSteps .dstep-btn{flex:0 0 84%;scroll-snap-align:center;min-width:0}
 }
 
