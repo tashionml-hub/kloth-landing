@@ -496,11 +496,14 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
 .stat-i { opacity: 1 !important; animation: none !important; }
 
 @media(max-width:900px){
+  #magic{position:relative}
   #magic .si{padding:40px 16px 40px}
-  .magic-inner{display:block !important;min-height:340vh;grid-template-columns:none !important}
+  .magic-inner{display:block !important;min-height:340vh;grid-template-columns:none !important;position:relative}
   .magic-inner > div:first-child{margin-bottom:24px}
   .magic-demo.reveal{transform:none !important;opacity:1 !important}
-  .magic-demo{position:sticky;top:72px;max-height:calc(100vh - 84px);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;z-index:5;background:#f5f3f2;padding:10px 0 14px}
+  .magic-demo{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;background:#f5f3f2;padding:10px 0 14px;width:100%;max-width:360px;margin:0 auto;transition:none}
+  .magic-demo.is-pinned{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:8}
+  .magic-demo.is-pin-end{position:absolute;bottom:20px;top:auto;left:50%;transform:translateX(-50%);z-index:8}
   .demo-stage{width:100% !important;max-width:320px !important;height:48vh !important;min-height:300px;max-height:460px}
   .demo-stage img#demoBig{width:100% !important;height:100% !important;object-fit:contain !important;object-position:center !important}
   .sz-btns.sz-side{right:4px;gap:8px}
@@ -805,16 +808,36 @@ footer{background:#040304;padding:44px clamp(24px,5vw,80px);border-top:1px solid
           var keys=['s','m','l','xl'];
           var lastIdx=-1;
           var section=document.getElementById('magic');
+          var demo=document.querySelector('.magic-demo');
+          var inner=document.querySelector('#magic .magic-inner');
+          var topOffset=72;
+          function isMobile(){return window.innerWidth<=900;}
           function onScroll(){
-            if(!section)return;
-            var r=section.getBoundingClientRect();
-            var vh=window.innerHeight||document.documentElement.clientHeight;
-            var scrollable=r.height-vh;
+            if(!section||!demo)return;
+            if(!isMobile()){
+              demo.classList.remove('is-pinned','is-pin-end');
+              return;
+            }
+            var sr=section.getBoundingClientRect();
+            var ir=inner?inner.getBoundingClientRect():sr;
+            var dh=demo.offsetHeight;
+            var pinStart=ir.top<=topOffset;
+            var pinEndReached=ir.bottom-dh-20<=topOffset;
+            if(pinStart&&!pinEndReached){
+              demo.classList.add('is-pinned');
+              demo.classList.remove('is-pin-end');
+            }else if(pinEndReached){
+              demo.classList.remove('is-pinned');
+              demo.classList.add('is-pin-end');
+            }else{
+              demo.classList.remove('is-pinned','is-pin-end');
+            }
+            var scrollable=sr.height-(window.innerHeight||document.documentElement.clientHeight);
             if(scrollable<=0){
               if(lastIdx!==2){lastIdx=2;doSwitch('l');}
               return;
             }
-            var p=Math.max(0,Math.min(.9999,(-r.top)/scrollable));
+            var p=Math.max(0,Math.min(.9999,(-sr.top)/scrollable));
             var idx=Math.min(3,Math.floor(p*4));
             if(idx!==lastIdx){lastIdx=idx;doSwitch(keys[idx]);}
           }
